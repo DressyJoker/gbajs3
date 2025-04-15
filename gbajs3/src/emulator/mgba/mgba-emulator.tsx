@@ -218,7 +218,19 @@ export const mGBAEmulator = (mGBA: mGBAEmulatorTypeDef): GBAEmulator => {
     )
       await mGBA.SDL2.audioContext.resume();
   };
-
+    
+  try {
+    if (mGBA?.RTC) {
+      mGBA.RTC.enabled = true;
+      mGBA.RTC.time = () => new Date(); // Always reflect current time
+      console.log("[RTC] RTC manually enabled.");
+    } else {
+      console.warn("[RTC] RTC object not found in mGBA module.");
+    }
+  } catch (e) {
+    console.error("[RTC] Failed to enable RTC:", e);
+  }
+  
   return {
     addCoreCallbacks: mGBA.addCoreCallbacks,
     autoLoadCheats: mGBA.autoLoadCheats,
