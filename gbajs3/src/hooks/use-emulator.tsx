@@ -12,8 +12,11 @@ export const useEmulator = (canvas: HTMLCanvasElement | null) => {
   useEffect(() => {
     const initialize = async () => {
       if (canvas) {
-        const Module = await mGBA({ canvas });
-
+        const Module = await mGBA({
+          canvas,
+          locateFile: () => '/mgba.wasm'
+        });
+        
         const mGBAVersion =
           Module.version.projectName + ' ' + Module.version.projectVersion;
         console.log(mGBAVersion);
